@@ -24,6 +24,7 @@ Pair listener
 Token deploy
 Wallet Creator
 Wallet Viewer
+Wallet Loader
 Sniper
 
 UNSAFE:

@@ -7,7 +7,7 @@ from os import getenv
 from dotenv import load_dotenv
 from chain import Chain
 from contract import Contract
-from publicwallet import PublicWallet
+from wallet import Wallet
 from pool import Pool
 import json
 import random
@@ -17,16 +17,16 @@ from eth_account import Account
 # If you haven't already installed the Solidity compiler, uncomment the following line
 # solcx.install_solc()
 
-class WalletViewer:
+class WalletLoader:
 
-    def __init__(self, newChainName,  walletAddr):
+    def __init__(self, newChainName,  walletName):
 
         # Need to enable an unstable feature of this lib
         Account.enable_unaudited_hdwallet_features()
 
         self.chain = Chain(newChainName)
 
-        self.wallet = PublicWallet(walletAddr)
+        self.wallet = Wallet(walletName)
 
         print("----------------------")
 
@@ -45,9 +45,9 @@ class WalletViewer:
 # Test
 if len(sys.argv) > 2:
     chainName = sys.argv[1]
-    walletAddr = sys.argv[2]
+    walletName = sys.argv[2]
     
-    wv = WalletViewer(chainName, walletAddr)
+    wv = WalletLoader(chainName, walletName)
 
     # All additional contracts are arguments
     for contractAddr in sys.argv[3:]:
@@ -58,4 +58,4 @@ if len(sys.argv) > 2:
         pool.load(wv.wallet)
         pool.printBalance(wv.wallet)
 else:
-    print("Usage: python walletviewer.py <chain> <walletAddr> [contract1, contract2, ...]")
+    print("Usage: python walletloader.py <chain> <walletName> [contract1, contract2, ...]")
