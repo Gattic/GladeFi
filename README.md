@@ -38,5 +38,10 @@ Proxy deploy will not allow us to interact with the contract properly
 - Add more documentation
 - Remove all the hardcoding and magic numbers
 
+-Fix Home dir code:
+import os
+import subprocess
+home_dir = os.path.expanduser("~")
+
 
 https://web3py.readthedocs.io/en/stable/web3.eth.html
