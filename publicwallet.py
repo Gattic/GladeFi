@@ -1,4 +1,5 @@
 import sys
+import json
 #import solcx
 #import web3-ethereum-defi
 import asyncio
@@ -18,12 +19,14 @@ class PublicWallet:
 
         if not len(walletAddr):
             print("Invalid wallet file!")
-            return
+            sys.stderr.write("Invalid wallet file!")
 
         if PublicWallet.validate(self.address):
             print("Wallet Initialized " + self.address)
+
         else:
             print("Invalid wallet!")
+            sys.stderr.write(f"{self.address} is an invalid wallet!")
             sys.exit(1)
 
     @staticmethod
