@@ -41,6 +41,13 @@ class WalletViewer:
         print(f"Balance: {weiBalance} WEI")
 
         print("----------------------")
+
+        dataSendBack = {
+            "ETH Balance": ethBalance,
+            "WEI Balance": weiBalance
+        }
+
+        print(json.dumps(dataSendBack))
         
 # Test
 if len(sys.argv) > 2:
@@ -59,3 +66,4 @@ if len(sys.argv) > 2:
         pool.printBalance(wv.wallet)
 else:
     print("Usage: python walletviewer.py <chain> <walletAddr> [contract1, contract2, ...]")
+    print(json.dumps({"error": "Invalid arguments"})) 

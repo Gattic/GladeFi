@@ -6,7 +6,7 @@ USE AT YOUR OWN RISK.
 
 # Setup
 
-`pip install -r requirements.txt --legacy-peer-deps`
+`pip install --use-deprecated=legacy-resolver -r requirements.txt`
 
 -Put your etherscan api key in .api-etherscan
 `API_KEY_ETHERSCAN=apiKey`
