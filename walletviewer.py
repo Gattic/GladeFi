@@ -43,8 +43,8 @@ class WalletViewer:
         print("----------------------")
 
         dataSendBack = {
-            "ETH Balance": ethBalance,
-            "WEI Balance": weiBalance
+            "ETH Balance": str(ethBalance),
+            "WEI Balance": str(weiBalance)
         }
 
         print(json.dumps(dataSendBack))
