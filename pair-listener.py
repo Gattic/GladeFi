@@ -158,7 +158,7 @@ class PairListener:
 
         with open(file_path, "a", encoding="utf-8") as f:
             self.lock_file(f)
-            f.write(content + "\n")
+            f.write(json_content + "\n")
             self.unlock_file(f)
 
     def lock_file(self, file):
