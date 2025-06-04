@@ -2,12 +2,14 @@ import os
 import json
 from datetime import datetime, timezone, timedelta
 
-def read_pairs_by_date(date, chain_name="ETH", days=1):
+def read_pairs_by_date(date, chain_name="ETH", days=1, latest_entries=5):
     """
     Reads the pair log file for a given UTC date (or range of dates) and returns a JSON array.
     
     :param date: Date string in format YYYY-MM-DD (e.g., "2025-02-16").
+    :param chain_name: Blockchain name (default= "ETH")
     :param days: Number of days to look back (default = 1). If >1, fetches logs from `date` to `date - (days-1)`.
+    :param latest_entries: Number of most recent entries to return (default = 5)
     :return: JSON array containing liquidity pair data from the given range.
     """
     
@@ -20,8 +22,8 @@ def read_pairs_by_date(date, chain_name="ETH", days=1):
 
     for i in range(days):
         target_date = start_date - timedelta(days=i) #Get past date
-
         file_path = os.path.join(log_dir, f"{target_date.strftime('%Y-%m-%d')}_pairs.txt")
+
         if os.path.exists(file_path):
             with open(file_path, "r", encoding="utf-8") as f:
                 for line in f:
@@ -32,14 +34,29 @@ def read_pairs_by_date(date, chain_name="ETH", days=1):
         else:
             print(f"No log file found for {target_date.strftime('%Y-%m-%d')} in {chain_name}.")
     
-    return pairs
+    return pairs[-latest_entries:] if pairs else []
 
 
+#TODO: update args to accept other blockchains
 today_date = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+if len(sys.argv) == 0:
+    print(json.dumps(read_pairs_by_date(today_date)))
+elif len(sys.argv) == 1:
+    try:
+        value = int(sys.argv[0])
+    except ValueError:
+        sys.stderr.write(f"{sys.argv[0]} is not a valid integer")
 
-pairs_data = read_pairs_by_date(today_date)
+    print(json.dumps(read_pairs_by_data(today_date, "ETH", value), indent=4))
+elif len(sys.argv) == 2:
+    try:
+        dayValue = int(sys.argv[0])
+    except ValueError:
+        sys.stderr.write(f"{sys.argv[0]} is not a valid integer")
 
-if pairs_data:
-    print(json.dumps(pairs_data, indent=4))
-else:
-    print("No pairs found in the given date range.")
+    try:
+        latestEntries = int(sys.argv[1])
+    except ValueError:
+        sys.stderr.write(f"{sys.argv[1]} is not a valid integer")
+
+    print(json.dumps(read_pairs_by_data(today_date, "ETH", dayValue, latestEntries), indent=4))
